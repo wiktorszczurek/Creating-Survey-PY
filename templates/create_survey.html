@@ -1,0 +1,54 @@
+{% extends 'layout.html' %} {% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      form {
+        align-items: center;
+        text-align: center;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #02b1d9;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 5px;
+        margin-top: 1rem;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0189a8;
+      }
+      .all {
+        margin-top: 2rem;
+        text-align: center;
+      }
+      .tittle {
+        margin-bottom: -0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <form method="POST">
+      <div class="all">
+        {{ form.hidden_tag() }}
+        <div class="tittle">{{ form.title.label }}:</div>
+        <br />
+        {{ form.title() }}<br />
+        <input type="submit" value="Utwórz ankietę" />
+      </div>
+    </form>
+  </body>
+</html>
+{% endblock %}

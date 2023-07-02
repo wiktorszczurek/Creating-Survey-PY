@@ -1,0 +1,192 @@
+{% extends 'layout.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      h2 {
+        text-align: center;
+        padding: 1rem;
+        color: rgb(114, 114, 114);
+      }
+
+      .edytuj {
+        text-align: center;
+      }
+
+      .edytuj a {
+        display: inline-block;
+        background-color: #02b1d9;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+        margin-bottom: 2rem;
+      }
+
+      .pytania {
+        text-align: center;
+      }
+
+      .pytania a {
+        display: inline-block;
+        background-color: #7102d9;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: #7102d9;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+      }
+
+      .btn-link {
+        background-color: transparent;
+        color: #7102d9;
+        text-decoration: underline;
+      }
+
+      button.usun {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #008cac;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        margin: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: #ff0000;
+      }
+
+      p {
+        text-align: center;
+      }
+
+      .notes-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 3rem; 
+      }
+
+      .note {
+        width: 70%;
+        margin-bottom: 1rem;
+        border: 1px dashed #cecdcda4;
+        padding: 1rem;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+
+      .note-content {
+        margin-bottom: 0.5rem;
+      }
+
+      .note-delete {
+        position: absolute;
+        right: 0;
+        bottom: 0; 
+      }
+      @media screen and (max-width: 768px) {
+        .note {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <h2>{{ survey.title }}</h2>
+    <div class="pytania">
+      {% if current_user.role == "admin" %}
+      <a href="{{ url_for('edit_survey', survey_id=survey.id) }}"
+        >Edytuj pytania</a
+      >
+      {% endif %}
+    </div>
+    <br>
+    <br>
+    <div class="edytuj">
+      <a href="{{ url_for('fill_survey', survey_id=survey.id) }}"
+        >Wypełnij ankietę</a
+      ><br />
+      <a href="{{ url_for('completed_surveys', survey_id=survey.id) }}"
+        >Zapisane ankiety</a
+      >
+    </div>
+
+    <h2>Notatki</h2>
+    <div class="pytania">
+      {% if current_user.role == "admin" %}
+      <a
+        href="{{ url_for('add_note_to_survey', survey_id=survey.id) }}"
+        class="btn"
+        >Dodaj notatkę</a
+      >
+      {% endif %}
+    </div>
+    <br />
+    <div class="notes-container">
+      {% for note in survey.notes %}
+      <div class="note">
+        <div class="note-content">{{ note.content }}</div>
+        {% if current_user.role == 'admin' %}
+        <form
+          action="{{ url_for('delete_note', note_id=note.id) }}"
+          method="POST"
+        >
+          {{ form.hidden_tag() }}
+          <input type="hidden" name="_method" value="DELETE" />
+          <button
+            type="submit"
+            class="usun note-delete"
+            onclick="return confirm('Czy na pewno chcesz usunąć tę notatkę?')"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </form>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    </div>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'layout.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      form {
+        width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f7f7f7;
+        border-radius: 5px;
+      }
+
+      h2 {
+        text-align: center;
+        padding: 1rem;
+        color: #02b1d9;
+      }
+
+      .checkbox-input {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .custom-checkbox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 35px;
+        background: #999999;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 5px;
+        position: relative;
+      }
+
+      .custom-checkbox span {
+        position: relative;
+        display: block;
+        text-align: center;
+        width: 100%;
+        color: white;
+        z-index: 1;
+      }
+
+      .custom-checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      .custom-checkbox::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        background-color: transparent;
+        z-index: 0;
+      }
+
+      .custom-checkbox.checked-yes::before {
+        background-color: #008000;
+      }
+
+      .custom-checkbox.checked-no::before {
+        background-color: #ff0000;
+      }
+
+      .confirm {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      .btn {
+        display: block;
+
+        padding: 10px 20px;
+        background: #02b1d9;
+        color: #fff;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background: #0056b3;
+      }
+
+      p.main {
+        text-align: center;
+        margin-bottom: 1rem;
+        font-weight: bold;
+      }
+
+      .pole {
+        margin-bottom: 2rem;
+        text-align: center;
+        margin-top: 1rem;
+      }
+      .edytuj {
+        text-align: center;
+      }
+
+      .edytuj a {
+        display: inline-block;
+        background-color: #7102d9;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+      }
+
+      @media only screen and (max-width: 768px) {
+        form {
+          max-width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <form class="formularz" method="POST">
+      {{ form.hidden_tag() }}
+
+      <h2>{{ survey.title }}</h2>
+      <p class="main">Imię i nazwisko: {{ form.name() }}</p>
+      {% for question, answer_form in question_answer_forms %}
+
+      <p class="main">{{ loop.index }}. {{ question.content }}</p>
+      <div class="checkbox-input">
+        <label class="custom-label">
+          <div
+            class="custom-checkbox {% if answer_form.response_tak.checked %}checked-yes{% endif %}"
+          >
+            <span class="custom-toggle">Tak</span>
+            <input
+              type="checkbox"
+              class="custom-toggle custom-input"
+              name="{{ answer_form.response_tak.name }}"
+              value="true"
+              {%
+              if
+              answer_form.response_tak.checked
+              %}checked{%
+              endif
+              %}
+            />
+          </div>
+        </label>
+
+        <label class="custom-label">
+          <div
+            class="custom-checkbox {% if answer_form.response_nie.checked %}checked-no{% endif %}"
+          >
+            <span class="custom-toggle">Nie</span>
+            <input
+              type="checkbox"
+              class="custom-toggle custom-input"
+              name="{{ answer_form.response_nie.name }}"
+              value="true"
+              {%
+              if
+              answer_form.response_nie.checked
+              %}checked{%
+              endif
+              %}
+            />
+          </div>
+        </label>
+      </div>
+
+      <div class="pole">{{ answer_form.explanation() }}</div>
+      {% endfor %}
+      <div class="confirm" style="text-align: center">
+        <input type="submit" value="Wyślij" class="btn btn-primary" />
+      </div>
+    </form>
+  </body>
+  <script>
+    var checkboxes = document.querySelectorAll(".custom-input");
+
+    checkboxes.forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        var customCheckbox = this.parentNode;
+
+        if (this.checked) {
+          if (this.name.endsWith("_tak")) {
+            customCheckbox.style.backgroundColor = "#008000";
+          } else if (this.name.endsWith("_nie")) {
+            customCheckbox.style.backgroundColor = "#ff0000";
+          }
+        } else {
+          customCheckbox.style.backgroundColor = "#999999";
+        }
+      });
+    });
+  </script>
+</html>
+{% endblock %}

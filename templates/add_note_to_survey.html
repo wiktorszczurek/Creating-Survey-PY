@@ -1,0 +1,82 @@
+{% extends 'layout.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h2 {
+        text-align: center;
+        padding: 1rem;
+        color: rgb(114, 114, 114);
+      }
+      h3 {
+        color: rgb(114, 114, 114);
+      
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        margin: 0 auto;
+    
+        padding: 1rem;
+
+        border-radius: 5px;
+      }
+
+      form p {
+        margin-bottom: 1rem;
+      }
+
+      form label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      form input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 16px;
+        border: 1px solid #979797;
+        border-radius: 3px;
+      }
+
+      form input[type="submit"] {
+        background-color: #7102d9;
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 16px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      form input[type="submit"]:hover {
+        background-color: #5e01a7;
+      }
+
+      span.error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>{{ survey.title }}</h2>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <p>
+        <h3>Napisz notatke:</h3>
+        <br />
+        {{ form.content(size=250) }}<br />
+        {% for error in form.content.errors %} {% endfor %}
+      </p>
+      <p>{{ form.submit() }}</p>
+    </form>
+  </body>
+</html>
+{% endblock %}

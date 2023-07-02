@@ -1,0 +1,176 @@
+{% extends 'layout.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <style>
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        margin: 2rem;
+        color: #707070;
+      }
+      h2 span {
+        color: #02b1d9;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px; /* Zwiększenie odstępu */
+      }
+
+      .input-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px; /* Zwiększenie odstępu */
+      }
+
+      .input-container input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+
+      .input-container button {
+        margin-left: 10px; /* Odstęp od przycisku "Usuń" */
+      }
+
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      button[type="submit"],
+      button.add-question {
+        margin: 5px 0;
+        background-color: #8400ff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button.add-question {
+        background-color: #02b1d9;
+        margin-bottom: 2rem;
+      }
+
+      button.delete-question {
+        background-color: #ff0000;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .delete-question i {
+        color: #fff;
+        font-size: 14px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .container {
+          width: 100%;
+          border: none;
+          box-shadow: none;
+          padding: 10px;
+        }
+      }
+    </style>
+
+    <div class="container">
+      <h2>Edytuj pytania dla ankiety: <span>{{ survey.title }}</span></h2>
+
+      <form method="POST">
+        {{ form.hidden_tag() }} {% for question in questions %}
+        <div class="input-container">
+          <label for="question_{{ question.id }}">{{ loop.index }}.</label>
+          <input
+            type="text"
+            name="question_{{ question.id }}"
+            id="question_{{ question.id }}"
+            value="{{ question.content }}"
+            required
+          />
+          <button
+            type="submit"
+            name="delete_{{ question.id }}"
+            value="{{ question.id }}"
+            class="delete-question"
+            onclick="return confirm('Czy na pewno chcesz usunąć?')"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+        {% endfor %}
+
+        <div id="new-question-container"></div>
+
+        <div class="button-container">
+          <button type="button" class="add-question">Dodaj nowe pytanie</button>
+          <br />
+          <button type="submit" class="save-changes">Zapisz zmiany</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const newQuestionContainer = document.getElementById(
+        "new-question-container"
+      );
+      const addQuestionButton = document.querySelector(".add-question");
+      addQuestionButton.addEventListener("click", () => {
+        const newQuestionIndex =
+          document.querySelectorAll('input[name^="question_"]').length + 1;
+        const newQuestionDiv = document.createElement("div");
+        newQuestionDiv.classList.add("input-container");
+        newQuestionDiv.innerHTML = `
+        <label for="question_new_${newQuestionIndex}">Nowe pytanie ${newQuestionIndex}.</label>
+        <input type="text" name="question_new_${newQuestionIndex}" id="question_new_${newQuestionIndex}" required>
+        <button type="button" class="delete-question" onclick="removeQuestion(this)"><i class="fas fa-trash-alt"></i></button>
+      `;
+        newQuestionContainer.appendChild(newQuestionDiv);
+      });
+
+      function removeQuestion(button) {
+        const questionDiv = button.parentNode;
+        questionDiv.remove();
+      }
+    </script>
+  </body>
+</html>
+
+{% endblock %}

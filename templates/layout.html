@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Willa Poprad</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        text-decoration: none;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      header h1 {
+        font-size: 1.7rem;
+        color: white;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 0.3rem;
+        text-decoration: none;
+      }
+
+      header {
+        background-color: #02b1d9;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+
+      header nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        color: black;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      header nav ul li {
+        display: inline-block;
+        margin-left: 10px;
+        margin-right: 1rem;
+        color: black;
+      }
+
+      header nav ul li:first-child {
+        margin-left: 0;
+      }
+
+      header nav ul li a {
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      header nav ul.centered {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      footer {
+        background-color: #02b1d9;
+        padding: 0.5rem;
+        margin-top: auto;
+        text-align: center;
+      }
+
+      footer p {
+        margin: 5px 0;
+        color: white;
+        margin-top: auto;
+      }
+
+      footer p a {
+        margin: 5px 0;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      header img {
+        margin-left: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        header h1 {
+          text-align: center;
+          padding-top: 0.5rem;
+        }
+        header {
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          padding: 0;
+          padding-bottom: 0.5rem;
+        }
+        header nav ul {
+          flex-direction: row;
+          justify-content: center;
+
+          padding: 0;
+        }
+        header nav ul li {
+          margin-left: 10px;
+          margin-right: 10px;
+        }
+        header nav ul li:first-child {
+          margin-left: 0;
+        }
+        header nav ul li:last-child {
+          margin-right: 0;
+        }
+        header nav ul li a {
+          font-size: 1rem;
+        }
+        header img {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img
+        src="{{ url_for('static', filename='images/willa2.png') }}"
+        alt="Opis
+      obrazu"
+      />
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Strona główna</a></li>
+          <li><a href="{{ url_for('logout') }}">Wyloguj się</a></li>
+        </ul>
+      </nav>
+    </header>
+    {% block content %} {% endblock %}
+    <footer>
+      <p>© 2023 Willa Poprad</p>
+      <p>
+        Created by <a href="https://itisws.pl" target="_blank">ITisws.pl</a>
+      </p>
+    </footer>
+  </body>
+</html>

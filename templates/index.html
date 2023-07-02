@@ -1,0 +1,152 @@
+{% extends 'layout.html' %} {% block content %}
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      .index1 {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .index1 ul {
+        list-style-type: none;
+        padding: 0;
+
+        margin-bottom: 20px;
+      }
+
+      button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #008cac;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        margin: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      button.usun {
+        background-color: #ff0000;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .edytuj {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .edytuj a {
+        display: inline-block;
+        background-color: #7102d9;
+        border: none;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+      }
+      h3 {
+        color: #7102d9;
+        font-size: 0.9rem;
+        margin: 0.5rem;
+      }
+      h3 span {
+        color: rgb(255, 0, 0);
+        font-size: 0.9rem;
+      }
+      p.visit {
+        font-size: 1rem;
+        color: #d90202;
+        margin: 1rem;
+        font-weight: bold;
+      }
+      button.usun i {
+        color: #fff;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="edytuj">
+      {% if current_user.role == "admin" %}
+      <h3>
+        Zalogowałeś się jako <span>administrator</span>, możesz dodawać, usuwać
+        i edytować ankiety.
+      </h3>
+
+      <br />
+      <a class="button" href="{{ url_for('create_survey') }}"
+        >Utwórz nową ankietę</a
+      >
+      <p class="visit">Wypełnionych formularzy dziś: {{ views }}</p>
+    </div>
+    <div class="index1">
+      {% endif %}
+
+      <ul>
+        {% for survey in surveys %}
+
+        <li>
+          <button
+            class="survey-button"
+            onclick="window.location.href='{{ url_for('survey', survey_id=survey.id) }}'"
+          >
+            {{ survey.title }}
+          </button>
+          {% if current_user.role == "admin" %}
+
+          <button
+            class="usun"
+            onclick="confirmDelete('{{ url_for('delete_survey', survey_id=survey.id) }}')"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <script>
+      function confirmDelete(url) {
+        if (confirm("Czy na pewno chcesz usunąć tę ankietę?")) {
+          window.location.href = url;
+        }
+      }
+      window.onload = function () {
+        var buttons = document.getElementsByClassName("survey-button");
+        var colors = ["#02b1d9", "#008cac"];
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.backgroundColor = colors[Math.floor(i / 2) % 2];
+        }
+      };
+    </script>
+  </body>
+</html>
+{% endblock %}

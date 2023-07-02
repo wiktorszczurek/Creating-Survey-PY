@@ -1,0 +1,96 @@
+{% extends 'layout.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h2 {
+        text-align: center;
+        padding: 2rem;
+        color: #737373;
+        font-size: 2rem;
+      }
+      h2 span {
+        font-weight: bold;
+        color: #02b1d9;
+      }
+      table {
+        max-width: 700px;
+        text-align: center;
+        width: 50%;
+        border-collapse: collapse;
+        margin: 0 auto;
+        margin-bottom: 4rem;
+        border: solid 1px #8f8f8f;
+        font-size: 0.8rem;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+        border: solid 1px #8f8f8f;
+      }
+      td span {
+        font-weight: bold;
+      }
+
+      th {
+        background-color: #02b1d9;
+        border-bottom: 1px solid #8f8f8f;
+        color: white;
+      }
+
+      tr:nth-child(even) {
+        background-color: #ececec;
+      }
+
+      td .answer-no {
+        color: rgba(255, 0, 0, 0.795);
+      }
+
+      td .answer-yes {
+        color: rgba(0, 128, 0, 0.795);
+      }
+
+      @media (max-width: 768px) {
+        table {
+          width: 95%;
+        }
+        h2 {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Zapisane ankiety - <span>{{ survey.title }}</span></h2>
+
+    {% for completed_survey in completed_surveys|reverse %}
+    <table>
+      <tr>
+        <th>
+          {{ completed_survey.name }}<br />Data: {{
+          completed_survey.timestamp.strftime("%Y-%m-%d %H:%M") }}
+        </th>
+        <th>Tak/Nie</th>
+        <th>Dlaczego nie?</th>
+      </tr>
+      {% for answer in completed_survey.answers %}
+      <tr>
+        <td><span>{{ loop.index }}.</span> {{ answer.question.content }}</td>
+        <td>
+          {% if answer.response_tak %}
+          <span class="answer-yes">Tak</span> {% elif answer.response_nie %}
+          <span class="answer-no">Nie</span> {% endif %}
+        </td>
+        <td>{{ answer.explanation }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
+
+{% endfor %} {% endblock %}

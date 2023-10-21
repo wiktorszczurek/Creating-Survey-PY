@@ -8,3 +8,5 @@
 - The entire application interface and instructions are crafted in Polish.
 - Application written with Python, Flask, HTML, CSS, JavaScript.
 - Application written in Polish.
+
+![ankiety3](https://github.com/wiktorszczurek/Creating-Survey-PY/assets/124889327/58a34607-a661-49d1-acfa-118d49f2ce08)
